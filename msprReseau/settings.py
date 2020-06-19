@@ -30,7 +30,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['.lechatelet.com', '172.31.3.3']
 
 # Baseline configuration.
-AUTH_LDAP_SERVER_URI = 'ldap://172.31.3.1'
+AUTH_LDAP_SERVER_URI = 'ldap://ldap.lechatelet.com'
 
 AUTH_LDAP_BIND_DN = 'cn=administrateur,dc=lechatelet,dc=com'
 AUTH_LDAP_BIND_PASSWORD = 'Azerty123'
