@@ -27,7 +27,7 @@ SECRET_KEY = '1t&kfklk=s^e-i#!+c414l-63tjsh0+9w0_4w^($1zq=50acv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".lechatelet.com"]
 
 # Baseline configuration.
 AUTH_LDAP_SERVER_URI = 'ldap://172.33.3.1'
