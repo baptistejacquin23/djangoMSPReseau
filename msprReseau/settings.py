@@ -30,12 +30,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Baseline configuration.
-AUTH_LDAP_SERVER_URI = 'ldap://ldap.example.com'
+AUTH_LDAP_SERVER_URI = 'ldap://172.33.3.1'
 
-AUTH_LDAP_BIND_DN = 'cn=django-agent,dc=example,dc=com'
-AUTH_LDAP_BIND_PASSWORD = 'phlebotinum'
+AUTH_LDAP_BIND_DN = 'cn=administrateur,dc=lechatelet,dc=com'
+AUTH_LDAP_BIND_PASSWORD = 'Azerty123'
+
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    'ou=users,dc=example,dc=com',
+    'ou=medecin,dc=lechatelet,dc=com',
     ldap.SCOPE_SUBTREE,
     '(uid=%(user)s)',
 )
@@ -44,15 +45,15 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch(
 
 # Set up the basic group parameters.
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-    'ou=django,ou=groups,dc=example,dc=com',
+    'cn=medecins,ou=medecin,dc=lechatelet,dc=com',
     ldap.SCOPE_SUBTREE,
     '(objectClass=groupOfNames)',
 )
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr='cn')
 
 # Simple group restrictions
-AUTH_LDAP_REQUIRE_GROUP = 'cn=enabled,ou=django,ou=groups,dc=example,dc=com'
-AUTH_LDAP_DENY_GROUP = 'cn=disabled,ou=django,ou=groups,dc=example,dc=com'
+AUTH_LDAP_REQUIRE_GROUP = 'cn=enabled,ou=medecins,ou=medecin,dc=lechatelet,dc=com'
+AUTH_LDAP_DENY_GROUP = 'cn=disabled,ou=medecins,ou=medecin,dc=lechatelet,dc=com'
 
 # Populate the Django user from the LDAP directory.
 AUTH_LDAP_USER_ATTR_MAP = {
@@ -62,9 +63,9 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    'is_active': 'cn=active,ou=django,ou=groups,dc=example,dc=com',
-    'is_staff': 'cn=staff,ou=django,ou=groups,dc=example,dc=com',
-    'is_superuser': 'cn=superuser,ou=django,ou=groups,dc=example,dc=com',
+    'is_active': 'cn=active,ou=medecins,ou=medecin,dc=lechatelet,dc=com',
+    'is_staff': 'cn=staff,ou=medecins,ou=medecin,dc=lechatelet,dc=com',
+    'is_superuser': 'cn=superuser,ou=medecins,ou=medecin,dc=lechatelet,dc=com',
 }
 
 # This is the default, but I like to be explicit.
