@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        {{state}}
+        <form action="" method="post"> {% csrf_token %}
+            Email address: <label>
+                <input type="text" name="email" value="{{ email }}" />
+            </label>
+            Password: <label>
+                <input type="password" name="password" value="" />
+            </label>
+            <input type="submit" value="Log in" />
+        </form>
+    </body>
+</html>

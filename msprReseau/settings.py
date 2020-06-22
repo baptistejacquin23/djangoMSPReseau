@@ -17,7 +17,6 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -27,24 +26,50 @@ SECRET_KEY = '1t&kfklk=s^e-i#!+c414l-63tjsh0+9w0_4w^($1zq=50acv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.lechatelet.com', '172.31.3.3']
+ALLOWED_HOSTS = ["172.31.3.3"]
 
-# Baseline configuration.
-AUTH_LDAP_SERVER_URI = 'ldap://ldap.lechatelet.com'
+# The URL of the LDAP server.
+LDAP_AUTH_URL = "ldap://172.31.3.1"
 
-AUTH_LDAP_BIND_DN = 'cn=administrateur,dc=lechatelet,dc=com'
-AUTH_LDAP_BIND_PASSWORD = 'Azerty123'
+# Initiate TLS on connection.
+LDAP_AUTH_USE_TLS = False
 
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    'ou=medecin,dc=lechatelet,dc=com',
-    ldap.SCOPE_SUBTREE,
-    '(uid=%(user)s)',
-)
+# The LDAP search base for looking up users.
+LDAP_AUTH_SEARCH_BASE = "ou=people,dc=example,dc=com"
+
+# The LDAP class that represents a user.
+LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
+
+# User model fields mapped to the LDAP
+# attributes that represent them.
+LDAP_AUTH_USER_FIELDS = {
+    "username": "uid",
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
 
 AUTHENTICATION_BACKENDS = [
-    'django_auth_ldap.backend.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django_auth_ldap.backend.LDAPBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+    "django_python3_ldap.auth.LDAPBackend",
 ]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django_python3_ldap": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
 
 # Application definition
 
@@ -57,6 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'home',
+    'django_python3_ldap',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
@@ -97,7 +123,6 @@ LOGOUT_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'msprReseau.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -107,7 +132,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -127,7 +151,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -140,7 +163,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
