@@ -52,8 +52,6 @@ LDAP_AUTH_SYNC_USER_RELATIONS = "django_python3_ldap.utils.sync_user_relations"
 LDAP_AUTH_FORMAT_SEARCH_FILTERS = "django_python3_ldap.utils.format_search_filters"
 
 LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_directory"
-LDAP_AUTH_CONNECTION_USERNAME = 'Administrateur'
-LDAP_AUTH_CONNECTION_PASSWORD = 'Azerty123'
 
 LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = "MEDECIN"
 
