@@ -29,31 +29,38 @@ DEBUG = False
 ALLOWED_HOSTS = ["172.31.3.3"]
 
 # The URL of the LDAP server.
-LDAP_AUTH_URL = "ldap://172.31.3.1"
+LDAP_AUTH_URL = "ldap://172.31.3.1:389"
+# LDAP auth settings.
+LDAP_AUTH_USE_TLS = None
+LDAP_AUTH_SEARCH_BASE = "OU=Medecin,DC=lechatelet,DC=com"
 
-# Initiate TLS on connection.
-LDAP_AUTH_USE_TLS = False
+LDAP_AUTH_OBJECT_CLASS = "user"
 
-# The LDAP search base for looking up users.
-LDAP_AUTH_SEARCH_BASE = "ou=people,dc=example,dc=com"
-
-# The LDAP class that represents a user.
-LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
-
-# User model fields mapped to the LDAP
-# attributes that represent them.
 LDAP_AUTH_USER_FIELDS = {
-    "username": "uid",
+    "username": "sAMAccountName",
     "first_name": "givenName",
     "last_name": "sn",
     "email": "mail",
 }
 
-AUTHENTICATION_BACKENDS = [
-    # 'django_auth_ldap.backend.LDAPBackend',
-    # 'django.contrib.auth.backends.ModelBackend',
-    "django_python3_ldap.auth.LDAPBackend",
-]
+LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
+
+LDAP_AUTH_CLEAN_USER_DATA = "django_python3_ldap.utils.clean_user_data"
+
+LDAP_AUTH_SYNC_USER_RELATIONS = "django_python3_ldap.utils.sync_user_relations"
+
+LDAP_AUTH_FORMAT_SEARCH_FILTERS = "django_python3_ldap.utils.format_search_filters"
+
+LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_directory"
+LDAP_AUTH_CONNECTION_USERNAME = 'Administrateur'
+LDAP_AUTH_CONNECTION_PASSWORD = 'Azerty123'
+
+LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = "MEDECIN"
+
+AUTHENTICATION_BACKENDS = (
+    'django_python3_ldap.auth.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 LOGGING = {
     "version": 1,
