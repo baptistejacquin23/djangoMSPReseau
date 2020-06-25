@@ -34,6 +34,9 @@ LDAP_AUTH_URL = "ldap://172.31.3.1:389"
 LDAP_AUTH_USE_TLS = None
 LDAP_AUTH_SEARCH_BASE = "OU=Medecin,DC=lechatelet,DC=com"
 
+LDAP_AUTH_CONNECTION_USERNAME = 'Administrateur@lechatelet.com'
+LDAP_AUTH_CONNECTION_PASSWORD = 'Azerty123'
+
 LDAP_AUTH_OBJECT_CLASS = "user"
 
 LDAP_AUTH_USER_FIELDS = {
@@ -55,25 +58,30 @@ LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_di
 
 LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = "MEDECIN"
 
+# AUTHENTICATION_BACKENDS = (
+#   'django_python3_ldap.auth.LDAPBackend',
+#  'django.contrib.auth.backends.ModelBackend',
+# )
+
 AUTHENTICATION_BACKENDS = (
-    'django_python3_ldap.auth.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         },
     },
-    "loggers": {
-        "django_python3_ldap": {
-            "handlers": ["console"],
-            "level": "INFO",
-        },
-    },
+    'loggers': {
+        'two_factor': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
 }
 
 # Application definition
@@ -89,9 +97,12 @@ INSTALLED_APPS = [
     'home',
     'django_python3_ldap',
     'django_otp',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    # 'django_otp.plugins.otp_hotp',
+    'two_factor',
+    'otp_yubikey',
+    'twilio',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +112,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django_otp.middleware.OTPMiddleware',
+    'two_factor.middleware.threadlocals.ThreadLocals',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -123,7 +135,8 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/welcome'
+LOGIN_URL = 'two_factor:login'
+LOGIN_REDIRECT_URL = "/welcome"
 LOGOUT_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'msprReseau.wsgi.application'
